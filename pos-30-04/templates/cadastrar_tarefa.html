@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Tarefa</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <a href="cadastrar_tarefa.html"><button>Cadastrar</button></a>
+            <a href="listar_tarefas.html"><button>Listar</button></a>
+        </div>
+        <div class="conteudo">
+            <div class="cadastrar">
+                <h1>CADASTRO DE TAREFA</h1>
+                <form id="formTarefa">
+                    <label for="nome_tarefa">Nome da Tarefa:</label><br><br>
+                    <input type="text" id="nome_tarefa" placeholder="Dê nome à sua Tarefa" required><br><br>
+
+                    <label for="data_entrega">Data de Entrega:</label><br><br>
+                    <input type="datetime-local" id="data_entrega" required><br><br>
+
+                    <label for="disciplinas">Selecione a disciplina:</label><br><br>
+                    <select id="disciplinas" required>
+                        <option value="Português">Português</option>
+                        <option value="P.O.S.">P.O.S.</option>
+                        <option value="História">História</option>
+                        <option value="Biologia">Biologia</option>
+                        <option value="P.I.U">P.I.U</option>
+                    </select><br><br>
+
+                    <input type="submit" value="Criar">
+                </form>
+                <p id="mensagem"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Script para enviar tarefa -->
+    <script>
+        $(document).ready(function() {
+            $("#formTarefa").on("submit", function(e) {
+                e.preventDefault(); // evita recarregar a página
+
+                // Dados do formulário
+                const tarefa = {
+                    nome: $("#nome_tarefa").val(),
+                    data_entrega: $("#data_entrega").val(),
+                    disciplina: $("#disciplinas").val()
+                };
+
+                // Envia para a API
+                $.ajax({
+                    url: "http://localhost:8000/tarefas/",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(tarefa),
+                    success: function(response) {
+                        $("#mensagem").text("Tarefa cadastrada com sucesso!");
+                        $("#formTarefa")[0].reset(); // limpa o formulário
+                    },
+                    error: function(xhr, status, error) {
+                        $("#mensagem").text("Erro ao cadastrar tarefa.");
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
