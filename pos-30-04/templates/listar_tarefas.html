@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem de Tarefas</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/listar_tarefas.css">
 </head>
 <body>
     <div class="container">
+        <div class="menu">
+            <a href="/"><button>Cadastrar</button></a>
+            <a href="/tarefas/"><button>Listar</button></a>
+        </div>
         <h1>Listagem de Tarefas</h1>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nome</th>
-                    <th>Data de Entrega</th>
-                    <th>Disciplina</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Concluído</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -23,18 +27,41 @@
                 {% for tarefa in tarefas %}
                 <tr>
                     <td>{{ tarefa.id }}</td>
-                    <td>{{ tarefa.nome_tarefa }}</td>
-                    <td>{{ tarefa.data_entrega }}</td>
-                    <td>{{ tarefa.disciplinas }}</td>
+                    <td>{{ tarefa.titulo }}</td>
+                    <td>{{ tarefa.descricao }}</td>
+                    <td>{{ tarefa.concluido }}</td>
                     <td>
-                        <form action="/tarefas/{{ tarefa.id }}" method="post">
-                            <input type="submit" value="Excluir">
-                        </form>
+                        <button class="excluir-btn" data-tarefa-id="{{ tarefa.id }}">Excluir</button>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".excluir-btn").click(function() {
+                const tarefaId = $(this).data("tarefa-id");
+                excluirTarefa(tarefaId);
+            });
+
+            function excluirTarefa(tarefaId) {
+                $.ajax({
+                    url: "/tarefas/" + tarefaId,
+                    type: "DELETE",
+                    success: function(response) {
+                        // Recarrega a página para atualizar a lista
+                        window.location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Erro ao excluir tarefa:", xhr.responseText);
+                        alert("Erro ao excluir tarefa.");
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

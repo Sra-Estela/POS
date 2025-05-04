@@ -5,7 +5,8 @@
 │  ├──__pycache__/
 │  ├──.virtual/
 │  ├──static/css/
-|  │  └──style.css
+|  │  ├──cadastrar_tarefa.css
+|  │  └──listar_tarefas.css
 │  ├──templates/
 |  │  ├──cadastrar_tarefa.html
 |  │  └──listar_tarefas.html
@@ -15,7 +16,7 @@
 ```
 ---
 
-### Arquivo `static/css/style.css`:
+### Arquivo `static/css/cadastrar_tarefa.css`:
 ```css
 /* Reset básico */
 * {
@@ -26,15 +27,6 @@
 }
 
 /* Container principal */
-/* .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #fefefe;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-} */
-
 .conteudo {
     max-width: 600px;
     margin: 50px auto;
@@ -116,7 +108,98 @@ form input[type="submit"]:hover {
     font-weight: bold;
     color: #2e7d32;
 }
+```
 
+---
+
+### Arquivo `static/css/listar_tarefas.css`:
+```css
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Container principal */
+.container {
+    max-width: 800px; /* Aumentei a largura para acomodar a tabela */
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fefefe;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalho */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Botões do menu */
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+    background-color: whitesmoke;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) 
+}
+
+.menu button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.menu button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos da tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Botão de Excluir */
+.excluir-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.excluir-btn:hover {
+    background-color: #da190b;
+}
 ```
 
 ---
@@ -128,31 +211,28 @@ form input[type="submit"]:hover {
 <head>
     <meta charset="UTF-8">
     <title>Cadastro de Tarefa</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/static/css/cadastrar_tarefa.css">
 </head>
 <body>
     <div class="container">
         <div class="menu">
-            <a href="cadastrar_tarefa.html"><button>Cadastrar</button></a>
-            <a href="listar_tarefas.html"><button>Listar</button></a>
+            <a href="/"><button>Cadastrar</button></a>
+            <a href="/tarefas/"><button>Listar</button></a>
         </div>
         <div class="conteudo">
             <div class="cadastrar">
                 <h1>CADASTRO DE TAREFA</h1>
                 <form id="formTarefa">
-                    <label for="nome_tarefa">Nome da Tarefa:</label><br>
-                    <input type="text" id="nome_tarefa" placeholder="Dê nome à sua Tarefa" required><br><br>
+                    <label for="titulo">Título da Tarefa:</label><br>
+                    <input type="text" id="titulo" name="titulo" placeholder="Dê um título à sua Tarefa" required><br><br>
 
-                    <label for="data_entrega">Data de Entrega:</label><br>
-                    <input type="datetime-local" id="data_entrega" required><br><br>
+                    <label for="descricao">Descrição da Tarefa:</label><br>
+                    <input type="text" id="descricao" name="descricao" required><br><br>
 
-                    <label for="disciplinas">Selecione a disciplina:</label><br>
-                    <select id="disciplinas" required>
-                        <option value="Português">Português</option>
-                        <option value="P.O.S.">P.O.S.</option>
-                        <option value="História">História</option>
-                        <option value="Biologia">Biologia</option>
-                        <option value="P.I.U">P.I.U</option>
+                    <label for="concluido">Concluído:</label><br>
+                    <select id="concluido" name="concluido" required>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
                     </select><br><br>
 
                     <input type="submit" value="Criar">
@@ -168,14 +248,20 @@ form input[type="submit"]:hover {
     <!-- Script para enviar tarefa -->
     <script>
         $(document).ready(function() {
+            let nextId = 1; // Inicializa o ID
+
             $("#formTarefa").on("submit", function(e) {
                 e.preventDefault(); // evita recarregar a página
 
+                // Incrementa o ID ANTES da requisição
+                const currentId = nextId++;
+
                 // Dados do formulário
                 const tarefa = {
-                    nome: $("#nome_tarefa").val(),
-                    data_entrega: $("#data_entrega").val(),
-                    disciplina: $("#disciplinas").val()
+                    id: currentId, // Usa o ID atual
+                    titulo: $("#titulo").val(),
+                    descricao: $("#descricao").val(),
+                    concluido: $("#concluido").val() === "true"  // Converte para booleano
                 };
 
                 // Envia para a API
@@ -191,6 +277,8 @@ form input[type="submit"]:hover {
                     error: function(xhr, status, error) {
                         $("#mensagem").text("Erro ao cadastrar tarefa.");
                         console.error(xhr.responseText);
+                        // Se a requisição falhar, decrementa o nextId para evitar lacunas
+                        nextId--;
                     }
                 });
             });
@@ -198,7 +286,6 @@ form input[type="submit"]:hover {
     </script>
 </body>
 </html>
-
 ```
 
 ---
@@ -211,18 +298,22 @@ form input[type="submit"]:hover {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem de Tarefas</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/listar_tarefas.css">
 </head>
 <body>
     <div class="container">
+        <div class="menu">
+            <a href="/"><button>Cadastrar</button></a>
+            <a href="/tarefas/"><button>Listar</button></a>
+        </div>
         <h1>Listagem de Tarefas</h1>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nome</th>
-                    <th>Data de Entrega</th>
-                    <th>Disciplina</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Concluído</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -230,22 +321,44 @@ form input[type="submit"]:hover {
                 {% for tarefa in tarefas %}
                 <tr>
                     <td>{{ tarefa.id }}</td>
-                    <td>{{ tarefa.nome_tarefa }}</td>
-                    <td>{{ tarefa.data_entrega }}</td>
-                    <td>{{ tarefa.disciplinas }}</td>
+                    <td>{{ tarefa.titulo }}</td>
+                    <td>{{ tarefa.descricao }}</td>
+                    <td>{{ tarefa.concluido }}</td>
                     <td>
-                        <form action="/tarefas/{{ tarefa.id }}" method="post">
-                            <input type="submit" value="Excluir">
-                        </form>
+                        <button class="excluir-btn" data-tarefa-id="{{ tarefa.id }}">Excluir</button>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".excluir-btn").click(function() {
+                const tarefaId = $(this).data("tarefa-id");
+                excluirTarefa(tarefaId);
+            });
+
+            function excluirTarefa(tarefaId) {
+                $.ajax({
+                    url: "/tarefas/" + tarefaId,
+                    type: "DELETE",
+                    success: function(response) {
+                        // Recarrega a página para atualizar a lista
+                        window.location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Erro ao excluir tarefa:", xhr.responseText);
+                        alert("Erro ao excluir tarefa.");
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
-
 ```
 
 ---
@@ -260,6 +373,7 @@ from pathlib import Path
 from models import Tarefa
 from typing import List
 from fastapi import Request
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -268,6 +382,15 @@ templates = Jinja2Templates(directory="templates")
 
 # Definir a pasta estática para arquivos como CSS e JS
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Configurar o middleware CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8000"],  # Permite o frontend
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],  # Permite todos os headers
+)
 
 # Lista de tarefas (simulando um banco de dados)
 tarefas: List[Tarefa] = []
@@ -288,17 +411,8 @@ async def criar_tarefa(tarefa: Tarefa):
     tarefa.id = len(tarefas) + 1
     tarefas.append(tarefa)
     # Após a criação, redireciona para a página de listagem de tarefas
-    return {"message": "Tarefa criada com sucesso!", "tarefa": tarefa}
-
-@app.delete("/tarefas/{tarefa_id}", response_model=Tarefa)
-async def excluir_tarefa(tarefa_id: int):
-    # Tenta localizar a tarefa pelo ID e a exclui
-    for index, tarefa in enumerate(tarefas):
-        if tarefa_id == tarefa.id:
-            del tarefas[index]
-            return tarefa
-    raise HTTPException(status_code=404, detail="Tarefa não encontrada")
-
+    return tarefa # Retorna apenas o objeto Tarefa
+    #return {"message": "Tarefa criada com sucesso!", "tarefa": tarefa} # Antes
 ```
 
 ---
@@ -320,20 +434,39 @@ class Tarefa(BaseModel):
 ```txt
 annotated-types==0.7.0
 anyio==4.9.0
+certifi==2025.4.26
 click==8.1.8
 colorama==0.4.6
+dnspython==2.7.0
+email_validator==2.2.0
 fastapi==0.115.12
+fastapi-cli==0.0.7
 h11==0.16.0
+httpcore==1.0.9
+httptools==0.6.4
+httpx==0.28.1
 idna==3.10
 Jinja2==3.1.6
+markdown-it-py==3.0.0
 MarkupSafe==3.0.2
+mdurl==0.1.2
 pydantic==2.11.4
 pydantic_core==2.33.2
+Pygments==2.19.1
+python-dotenv==1.1.0
+python-multipart==0.0.20
+PyYAML==6.0.2
+rich==14.0.0
+rich-toolkit==0.14.4
+shellingham==1.5.4
 sniffio==1.3.1
 starlette==0.46.2
+typer==0.15.3
 typing-inspection==0.4.0
 typing_extensions==4.13.2
 uvicorn==0.34.2
+watchfiles==1.0.5
+websockets==15.0.1
 
 ```
 

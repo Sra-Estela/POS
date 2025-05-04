@@ -6,6 +6,7 @@ from pathlib import Path
 from models import Tarefa
 from typing import List
 from fastapi import Request
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -14,6 +15,15 @@ templates = Jinja2Templates(directory="templates")
 
 # Definir a pasta estática para arquivos como CSS e JS
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Configurar o middleware CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8000"],  # Permite o frontend
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],  # Permite todos os headers
+)
 
 # Lista de tarefas (simulando um banco de dados)
 tarefas: List[Tarefa] = []
@@ -34,13 +44,5 @@ async def criar_tarefa(tarefa: Tarefa):
     tarefa.id = len(tarefas) + 1
     tarefas.append(tarefa)
     # Após a criação, redireciona para a página de listagem de tarefas
-    return {"message": "Tarefa criada com sucesso!", "tarefa": tarefa}
-
-@app.delete("/tarefas/{tarefa_id}", response_model=Tarefa)
-async def excluir_tarefa(tarefa_id: int):
-    # Tenta localizar a tarefa pelo ID e a exclui
-    for index, tarefa in enumerate(tarefas):
-        if tarefa_id == tarefa.id:
-            del tarefas[index]
-            return tarefa
-    raise HTTPException(status_code=404, detail="Tarefa não encontrada")
+    return tarefa # Retorna apenas o objeto Tarefa
+    #return {"message": "Tarefa criada com sucesso!", "tarefa": tarefa} # Antes

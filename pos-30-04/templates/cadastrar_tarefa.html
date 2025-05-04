@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Cadastro de Tarefa</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/static/css/cadastrar_tarefa.css">
 </head>
 <body>
     <div class="container">
         <div class="menu">
-            <a href="cadastrar_tarefa.html"><button>Cadastrar</button></a>
-            <a href="listar_tarefas.html"><button>Listar</button></a>
+            <a href="/"><button>Cadastrar</button></a>
+            <a href="/tarefas/"><button>Listar</button></a>
         </div>
         <div class="conteudo">
             <div class="cadastrar">
                 <h1>CADASTRO DE TAREFA</h1>
                 <form id="formTarefa">
-                    <label for="nome_tarefa">Nome da Tarefa:</label><br>
-                    <input type="text" id="nome_tarefa" placeholder="Dê nome à sua Tarefa" required><br><br>
+                    <label for="titulo">Título da Tarefa:</label><br>
+                    <input type="text" id="titulo" name="titulo" placeholder="Dê um título à sua Tarefa" required><br><br>
 
-                    <label for="data_entrega">Data de Entrega:</label><br>
-                    <input type="datetime-local" id="data_entrega" required><br><br>
+                    <label for="descricao">Descrição da Tarefa:</label><br>
+                    <input type="text" id="descricao" name="descricao" required><br><br>
 
-                    <label for="disciplinas">Selecione a disciplina:</label><br>
-                    <select id="disciplinas" required>
-                        <option value="Português">Português</option>
-                        <option value="P.O.S.">P.O.S.</option>
-                        <option value="História">História</option>
-                        <option value="Biologia">Biologia</option>
-                        <option value="P.I.U">P.I.U</option>
+                    <label for="concluido">Concluído:</label><br>
+                    <select id="concluido" name="concluido" required>
+                        <option value="true">Sim</option>
+                        <option value="false">Não</option>
                     </select><br><br>
 
                     <input type="submit" value="Criar">
@@ -43,14 +40,20 @@
     <!-- Script para enviar tarefa -->
     <script>
         $(document).ready(function() {
+            let nextId = 1; // Inicializa o ID
+
             $("#formTarefa").on("submit", function(e) {
                 e.preventDefault(); // evita recarregar a página
 
+                // Incrementa o ID ANTES da requisição
+                const currentId = nextId++;
+
                 // Dados do formulário
                 const tarefa = {
-                    nome: $("#nome_tarefa").val(),
-                    data_entrega: $("#data_entrega").val(),
-                    disciplina: $("#disciplinas").val()
+                    id: currentId, // Usa o ID atual
+                    titulo: $("#titulo").val(),
+                    descricao: $("#descricao").val(),
+                    concluido: $("#concluido").val() === "true"  // Converte para booleano
                 };
 
                 // Envia para a API
@@ -66,6 +69,8 @@
                     error: function(xhr, status, error) {
                         $("#mensagem").text("Erro ao cadastrar tarefa.");
                         console.error(xhr.responseText);
+                        // Se a requisição falhar, decrementa o nextId para evitar lacunas
+                        nextId--;
                     }
                 });
             });
