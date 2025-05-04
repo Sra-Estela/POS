@@ -46,3 +46,9 @@ async def criar_tarefa(tarefa: Tarefa):
     # Após a criação, redireciona para a página de listagem de tarefas
     return tarefa # Retorna apenas o objeto Tarefa
     #return {"message": "Tarefa criada com sucesso!", "tarefa": tarefa} # Antes
+
+@app.delete("/tarefas/{tarefa_id}")
+async def excluir_tarefa(tarefa_id: int):
+    global tarefas
+    tarefas = [tarefa for tarefa in tarefas if tarefa.id != tarefa_id]
+    return {"message": "Tarefa excluída com sucesso!"}
