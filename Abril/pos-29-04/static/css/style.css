@@ -1,0 +1,45 @@
+body {
+    width: 100dvw;
+    height: 80%;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: aqua;
+}
+
+.container {
+    width: 100dvw;
+    height: 80%;
+    background-color: rgb(76, 0, 255);
+}
+
+.menu {
+    width: 100vw;
+    height: 40px;
+    background-color: cadetblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu > a {
+    margin: 10px;
+}
+
+.conteudo {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cadastrar {
+    width: 30dvw;
+    height: 40dvh;
+    background-color: chartreuse;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
