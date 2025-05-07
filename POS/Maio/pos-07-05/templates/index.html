@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Biblioteca</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form { margin-bottom: 30px; padding: 10px; border: 1px solid #ccc; }
+    input, button { display: block; margin: 5px 0; }
+    h2 { color: #333; }
+  </style>
+</head>
+<body>
+
+  <h1>Sistema de Biblioteca</h1>
+
+  <!-- FORMULÁRIO USUÁRIO -->
+  <form id="formUsuario">
+    <h2>Cadastrar Usuário</h2>
+    <input type="text" id="username" placeholder="Nome de usuário" required>
+    <input type="password" id="password" placeholder="Senha" required>
+    <button type="submit">Cadastrar Usuário</button>
+  </form>
+
+  <!-- FORMULÁRIO LIVRO -->
+  <form id="formLivro">
+    <h2>Cadastrar Livro</h2>
+    <input type="text" id="titulo" placeholder="Título" required>
+    <input type="number" id="ano" placeholder="Ano" required>
+    <input type="number" id="edicao" placeholder="Edição" required>
+    <button type="submit">Cadastrar Livro</button>
+  </form>
+
+  <!-- FORMULÁRIO BIBLIOTECA -->
+  <form id="formBiblioteca">
+    <h2>Cadastrar Biblioteca</h2>
+    <input type="text" id="nomeBiblioteca" placeholder="Nome da Biblioteca" required>
+    <textarea id="acervo" placeholder="Livros (JSON) Ex: [{&quot;titulo&quot;:&quot;Dom Casmurro&quot;, &quot;ano&quot;:1899, &quot;edicao&quot;:1}]"></textarea>
+    <textarea id="usuariosBib" placeholder="Usuários (JSON) Ex: [{&quot;username&quot;:&quot;ana&quot;, &quot;password&quot;:&quot;123&quot;, &quot;data_criacao&quot;:&quot;2025-05-07T00:00:00&quot;}]"></textarea>
+    <button type="submit">Cadastrar Biblioteca</button>
+  </form>
+
+  <!-- FORMULÁRIO EMPRÉSTIMO -->
+  <form id="formEmprestimo">
+    <h2>Registrar Empréstimo</h2>
+    <textarea id="usuarioEmprestimo" placeholder="Usuário (JSON)"></textarea>
+    <textarea id="livroEmprestimo" placeholder="Livro (JSON)"></textarea>
+    <input type="datetime-local" id="dataEmprestimo" required>
+    <input type="datetime-local" id="dataDevolucao" required>
+    <button type="submit">Registrar Empréstimo</button>
+  </form>
+
+  <script>
+    const api = "http://127.0.0.1:8000";
+
+    // USUÁRIO
+    $("#formUsuario").submit(function(e){
+      e.preventDefault();
+      $.post({
+        url: `${api}/usuarios`,
+        contentType: "application/json",
+        data: JSON.stringify({
+          username: $("#username").val(),
+          password: $("#password").val(),
+          data_criacao: new Date().toISOString()
+        }),
+        success: res => alert(res.mensagem)
+      });
+    });
+
+    // LIVRO
+    $("#formLivro").submit(function(e){
+      e.preventDefault();
+      $.post({
+        url: `${api}/livros`,
+        contentType: "application/json",
+        data: JSON.stringify({
+          titulo: $("#titulo").val(),
+          ano: parseInt($("#ano").val()),
+          edicao: parseInt($("#edicao").val())
+        }),
+        success: res => alert(res.mensagem)
+      });
+    });
+
+    // BIBLIOTECA
+    $("#formBiblioteca").submit(function(e){
+      e.preventDefault();
+      $.post({
+        url: `${api}/bibliotecas`,
+        contentType: "application/json",
+        data: JSON.stringify({
+          nome: $("#nomeBiblioteca").val(),
+          acervo: JSON.parse($("#acervo").val() || "[]"),
+          usuarios: JSON.parse($("#usuariosBib").val() || "[]")
+        }),
+        success: res => alert(res.mensagem)
+      });
+    });
+
+    // EMPRÉSTIMO
+    $("#formEmprestimo").submit(function(e){
+      e.preventDefault();
+      $.post({
+        url: `${api}/emprestimos`,
+        contentType: "application/json",
+        data: JSON.stringify({
+          usuario: JSON.parse($("#usuarioEmprestimo").val()),
+          livro: JSON.parse($("#livroEmprestimo").val()),
+          data_emprestimo: new Date($("#dataEmprestimo").val()).toISOString(),
+          data_devolucao: new Date($("#dataDevolucao").val()).toISOString()
+        }),
+        success: res => alert(res.mensagem)
+      });
+    });
+  </script>
+</body>
+</html>
