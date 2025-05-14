@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Atividades</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            <a href="cadastrar_tarefa.html"><button>Cadastrar</button></a>
+            <a href="listar_tarefas.html"><button>Listar</button></a>
+        </div>
+        <div class="conteudo">
+            <div class="cadastrar">
+                <h1>CADASTRO DE TAREFA</h1>
+                <form action="#" method="post">
+                    <label for="nome_tarefa">Nome da Tarefa:</label><br><br>
+                    <input type="text" name="" id="" placeholder="Dê nome a sua Tarefa:"><br><br>
+                    <label for="data_entrega">Data de Entrega:</label><br><br>
+                    <input type="datetime" name="" id="" placeholder="Defina o prazo:"><br><br>
+                    <label for="disciplinas">Selecione as disciplinas:</label>
+                    <select name="disciplinas" id="disciplinas" required>
+                        <option value="Português">Português</option>
+                        <option value="P.O.S.">P.O.S.</option>
+                        <option value="História">História</option>
+                        <option value="Biologia">Biologia</option>
+                        <option value="P.I.U">P.I.U</option>
+                    </select><br><br>
+                    <input type="submit" value="Criar">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
