@@ -141,3 +141,63 @@
 
 ### ✨ Dica Final
 > Sempre teste os endpoints criados com o Swagger da FastAPI ou com Postman. Anote erros comuns que aparecem no terminal, pois esses são cobrados nas provas!
+
+Claro! Aqui vai uma seleção de **materiais organizados por tópicos** que vão te ajudar a dominar tudo o que essa atividade envolve — desde leitura de CSV até criação de APIs e consumo em terminal.
+
+---
+
+## 📚 Materiais para Estudo – Atividade de Consulta por ID com FastAPI
+
+---
+
+### 🔢 1. **Leitura e manipulação de CSV com pandas**
+
+| Tópico                                    | Material                                                                                       |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 📖 Documentação pandas – `read_csv()`     | [pandas.read\_csv() – Docs](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html) |
+| 🎥 Vídeo: Introdução ao pandas (com CSVs) | [Curso em Vídeo – pandas](https://www.youtube.com/watch?v=KzD9A1VRE7g)                         |
+| 🧪 Exercício: Filtrar linha por ID        | `python\ndf[df['IdPedido'] == 123456]\n`                                                       |
+
+---
+
+### 🚀 2. **FastAPI – Criação de API REST**
+
+| Tópico                                    | Material                                                                      |
+| ----------------------------------------- | ----------------------------------------------------------------------------- |
+| 📖 Documentação oficial                   | [FastAPI Docs (PT-BR)](https://fastapi.tiangolo.com/pt/)                      |
+| 🎥 Vídeo: FastAPI do zero ao deploy       | [FastAPI + Python - CFBCursos](https://www.youtube.com/watch?v=KDN3JJcgnpY)   |
+| 📘 Artigo: Como criar uma API com FastAPI | [Dev.to - FastAPI](https://dev.to/tiangolo/fastapi-python-api-framework-1dj5) |
+| 🔧 Exemplo prático                        | `python\n@app.get("/pedido/{id}")\ndef get_pedido(id: int):\n    ...\n`       |
+
+---
+
+### 🌐 3. **Tratamento de Erros com HTTPException**
+
+| Tópico                      | Material                                                                            |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| 📘 HTTPException no FastAPI | [Handling Errors – FastAPI](https://fastapi.tiangolo.com/tutorial/handling-errors/) |
+| 🧪 Exemplo:                 | `python\nraise HTTPException(status_code=404, detail=\"Pedido não encontrado\")\n`  |
+
+---
+
+### 📦 4. **Consumo de API com `requests` (Terminal)**
+
+| Tópico                           | Material                                                                     |
+| -------------------------------- | ---------------------------------------------------------------------------- |
+| 📖 Docs oficial do `requests`    | [requests.readthedocs.io](https://requests.readthedocs.io/en/latest/)        |
+| 🎥 Vídeo: Requisições com Python | [Requests com Python - Hashtag](https://www.youtube.com/watch?v=qbW6FRbaSl0) |
+| 🧪 Exemplo prático:              | `python\nrequests.get(\"http://127.0.0.1:8000/pedido/123\")\n`               |
+
+---
+
+### 🧠 5. **Extras úteis**
+
+| Tema                                          | Link                                                                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 🧪 Ferramenta para testar APIs                | [Postman](https://www.postman.com/)                                                                                 |
+| 📄 Conversor CSV → JSON Online (visualização) | [ConvertCSV.com](https://www.convertcsv.com/csv-to-json.htm)                                                        |
+| 👩🏽‍💻 Curso gratuito de Python + APIs       | [Python e APIs REST - Curso do Guanabara](https://www.youtube.com/playlist?list=PLHz_AreHm4dlKP6QQCekuIPky1CiwmdI6) |
+
+---
+
+Se quiser, posso montar um **PDF ou página estilo guia de estudos** com tudo isso organizado por módulos. Deseja esse formato também?
