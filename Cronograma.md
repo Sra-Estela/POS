@@ -201,3 +201,96 @@ Claro! Aqui vai uma seleção de **materiais organizados por tópicos** que vão
 ---
 
 Se quiser, posso montar um **PDF ou página estilo guia de estudos** com tudo isso organizado por módulos. Deseja esse formato também?
+
+Claro, Estela! Aqui está uma **atividade prática autoral**, bem parecida com a original, cobrindo os mesmos objetivos — manipulação de CSV, criação de API REST com FastAPI, leitura por ID e consumo via terminal.
+
+---
+
+## 🧪 **Atividade Prática para Treino – Cadastro de Alunos**
+
+### 📁 Estrutura do arquivo CSV: `alunos.csv`
+
+O arquivo contém registros de alunos matriculados em um sistema educacional.
+
+| Campo             | Tipo       | Descrição                                                     |
+| ----------------- | ---------- | ------------------------------------------------------------- |
+| `IdAluno`         | inteiro    | Identificador único do aluno (chave primária)                 |
+| `Nome`            | texto(100) | Nome completo do aluno                                        |
+| `Idade`           | inteiro    | Idade do aluno                                                |
+| `Curso`           | texto(100) | Nome do curso que o aluno está matriculado                    |
+| `Campus`          | texto(50)  | Nome do campus                                                |
+| `DataMatricula`   | data       | Data de matrícula no curso (formato DD/MM/AAAA)               |
+| `StatusMatricula` | texto(20)  | Situação atual: "Ativo", "Trancado", "Cancelado", "Concluído" |
+
+---
+
+## 🎯 **Objetivo da atividade**
+
+* Criar uma API com FastAPI que permita:
+
+  * Buscar os dados de um aluno por `IdAluno`
+  * Retornar os dados em formato JSON
+  * Retornar erro 404 caso o ID não exista
+
+* Criar uma aplicação de terminal que:
+
+  * Peça ao usuário o `IdAluno`
+  * Consulte a API e imprima os dados, ou informe se não foi encontrado
+
+---
+
+## 🧰 **O que você deve fazer**
+
+### 📄 1. Criar o arquivo `alunos.csv` com pelo menos 10 alunos fictícios.
+
+Exemplo:
+
+```csv
+IdAluno;Nome;Idade;Curso;Campus;DataMatricula;StatusMatricula
+1001;João da Silva;20;Engenharia de Computação;Caicó;01/02/2023;Ativo
+1002;Maria Oliveira;22;Direito;Natal;10/03/2022;Trancado
+1003;Lucas Andrade;19;Administração;Caicó;15/01/2024;Ativo
+...
+```
+
+---
+
+### 🧑‍💻 2. Criar o backend (API FastAPI)
+
+#### Requisitos:
+
+* `GET /aluno/{id}`
+* Ler o `alunos.csv` (use `pandas.read_csv(..., encoding='utf-8', sep=';')`)
+* Retornar os dados ou erro 404 com `"Aluno não encontrado"`.
+
+---
+
+### 🖥️ 3. Criar o terminal de consulta
+
+#### Requisitos:
+
+* Pedir `IdAluno` via `input()`
+* Usar `requests.get()` para buscar na API
+* Imprimir os dados ou mensagem de erro
+
+---
+
+## ✅ Critérios avaliados
+
+| Critério                    | Obrigatório |
+| --------------------------- | ----------- |
+| Leitura correta do CSV      | ✅           |
+| Busca por ID                | ✅           |
+| Tratamento de erro (404)    | ✅           |
+| Consumo da API via terminal | ✅           |
+| Estrutura clara do JSON     | ✅           |
+
+---
+
+Se quiser, posso montar:
+
+* O CSV de exemplo
+* A API pronta
+* O terminal consumidor
+
+Você quer isso agora?
