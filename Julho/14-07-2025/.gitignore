@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual env
+venv/
+.env/
+env/
+.venv/
+.virtual/
+
+# Editor
+.vscode/
+.idea/
+
+# Banco de dados
+*.db
+*.sqlite3
+
+# Dados CSV temporários
+data/*.csv
+
+# Arquivos de log
+*.log
+
+# Cache do Jupyter
+.ipynb_checkpoints/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# PIP
+pip-log.txt
